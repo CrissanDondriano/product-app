@@ -1,5 +1,6 @@
 <template>
   <div class="container">
+    <!-- Navigation and search bar -->
     <div class="row mt-2">
       <ul class="col-12 d-flex justify-content-end">
         <router-link to="/logout">Logout</router-link>
@@ -13,6 +14,7 @@
         <input type="text" v-model="searchQuery" placeholder="Search..." @keyup.enter="searchProducts">
       </div>
     </div>
+    <!-- Product table -->
     <div class="row mt-2 table-container">
       <table class="table table-striped">
         <thead>
@@ -21,6 +23,7 @@
             <th class="text-center" width="30%">Description</th>
             <th class="text-center" width="20%">Quantity</th>
             <th class="text-center" width="25%">Price</th>
+            <th class="text-center" width="20%">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -29,35 +32,45 @@
             <td class="text-center">{{ product.product_description }}</td>
             <td class="text-center">{{ product.quantity }}</td>
             <td class="text-center">{{ product.price }}</td>
+            <td class="text-center">
+              <button @click="editProductModal(product)" class="btn btn-primary">Edit</button>
+              <button @click="deleteProduct(product)" class="btn btn-danger">Delete</button>
+            </td>
           </tr>
         </tbody>
       </table>
+      <!-- Pagination buttons -->
       <div class="pagination-buttons">
         <button class="btn btn-primary" @click="previousPage" :disabled="currentPage === 1">Previous</button>
         <button class="btn btn-primary" @click="nextPage" :disabled="currentPage === totalPages">Next</button>
       </div>
     </div>
+    <!-- Create, edit, delete modals -->
     <CreateProduct :visible="showCreateProducts" @update:visible="toggleCreateProducts" />
+    <EditProduct :visible="showEditProductModal" :product="productToEdit" @update:visible="toggleEditProductModal" />
   </div>
 </template>
 
 <script>
 import CreateProduct from './CreateProduct.vue';
+import EditProduct from './EditProduct.vue';
+import axios from 'axios';
+
 export default {
   name: 'HomePage',
   components: {
-    CreateProduct
+    CreateProduct,
+    EditProduct,
   },
   data() {
     return {
       showCreateProducts: false,
+      showEditProductModal: false,
+      productToEdit: null,
       currentPage: 1,
       itemsPerPage: 10,
       searchQuery: ''
     }
-  },
-  mounted() {
-    this.fetchData();
   },
   computed: {
     products() {
@@ -85,6 +98,23 @@ export default {
       if (!this.showCreateProducts) {
         this.fetchData();
       }
+    },
+    toggleEditProductModal() {
+      this.showEditProductModal = !this.showEditProductModal;
+    },
+    editProductModal(product) {
+      this.productToEdit = product;
+      this.showEditProductModal = true;
+    },
+    deleteProduct(product) {
+      axios.delete(`${this.$store.state.apiUrl}/deleteProducts/${product.id}`)
+        .then(() => {
+          this.fetchData();
+        })
+        .catch(error => {
+          console.error('Error deleting product:', error);
+          alert('Error deleting product. Please try again.');
+        });
     },
     previousPage() {
       if (this.currentPage > 1) {

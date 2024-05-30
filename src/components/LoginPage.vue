@@ -30,24 +30,31 @@ export default {
   methods: {
     async loginUser() {
       try {
-        // Call the login API endpoint using Axios
-        // the /login is an API route that define in the backend using Laravel
+        // Call login API
         const response = await axios.post(this.$store.state.apiUrl + '/login', {
           email: this.email,
           password: this.password
         });
         if (response.status === 201) {
           // Successful login, handle token storage and redirection
-          // the token will be stored in the local storage to guard the routes
-          // this will prevent to access the route without login
           localStorage.setItem('user_id', response.data.user_id);
           localStorage.setItem('token', response.data.token);
+          // Fetch products upon successful login
+          await this.fetchProducts();
           this.$router.push('/home');
         }
       } catch (error) {
-        // Handle login error, show error message to the user
-        // the errors will be displayed in the template using v-if directives
         this.errors = error.response.data.message;
+      }
+    },
+    async fetchProducts() {
+      try {
+        // Fetch products from backend
+        const response = await axios.get(`${this.$store.state.apiUrl}/products`);
+        // Update Vuex store with fetched products
+        this.$store.commit('setProducts', response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
       }
     },
     clearErrors() {
