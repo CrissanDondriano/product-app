@@ -1,11 +1,8 @@
 <template>
   <div class="container">
     <!-- Navigation and search bar -->
-    <div class="row mt-2">
-      <ul class="col-12 d-flex justify-content-end">
-        <router-link to="/logout">Logout</router-link>
-      </ul>
-    </div>
+    <h1 class="title"> PRODUCT DESCRIPTION</h1>
+    <br>
     <div class="row mt-2">
       <div class="col-md-6">
         <a @click="toggleCreateProducts" class="btn btn-primary">Create New Product</a>
@@ -44,6 +41,11 @@
         <button class="btn btn-primary" @click="previousPage" :disabled="currentPage === 1">Previous</button>
         <button class="btn btn-primary" @click="nextPage" :disabled="currentPage === totalPages">Next</button>
       </div>
+      <div class="row mt-2">
+      <ul class="col-12 d-flex justify-content-end">
+        <router-link to="/logout" class ="logout-btn">Logout</router-link>
+      </ul>
+    </div>
     </div>
     <!-- Create, edit, delete modals -->
     <CreateProduct :visible="showCreateProducts" @update:visible="toggleCreateProducts" />
@@ -131,6 +133,35 @@ export default {
 </script>
 
 <style scoped>
+
+.title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.container {
+  margin-top: 100px;
+}
+
+.logout-btn {
+  color: #fff;
+  background-color: #dc3545;
+  padding: 10px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.logout-btn:hover {
+  background-color: #c82333;
+}
+
 .table-container {
   display: flex;
   flex-direction: column;
