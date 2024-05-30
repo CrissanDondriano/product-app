@@ -167,6 +167,31 @@ export default {
   flex-direction: column;
 }
 
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table-custom th, .table-custom td {
+  padding: 12px 15px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.table-custom th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.table-custom tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.table-custom tr:hover {
+  background-color: #e9ecef;
+}
+
 .pagination-buttons {
   display: flex;
   justify-content: center;
