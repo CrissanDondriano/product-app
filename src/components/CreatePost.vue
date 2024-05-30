@@ -89,3 +89,17 @@
         }
     }
 </script>
+
+<style scoped>
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.modal-title {
+    font-weight: bold;
+    color: #343a40;
+}
+
+
+</style>
