@@ -101,5 +101,13 @@
     color: #343a40;
 }
 
+.modal-body {
+    padding: 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #e9ecef;
+}
+
 
 </style>
