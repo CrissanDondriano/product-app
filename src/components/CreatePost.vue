@@ -109,5 +109,16 @@
     border-top: 1px solid #e9ecef;
 }
 
+.form-group label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}
+
+
 
 </style>
