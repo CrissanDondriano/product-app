@@ -119,6 +119,36 @@
     border-radius: 0.25rem;
 }
 
+.btn-close {
+    border: none;
+    background: none;
+    font-size: 1.25rem;
+    color: #6c757d;
+}
 
+.btn-close:hover {
+    color: #343a40;
+}
+
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
 
 </style>
