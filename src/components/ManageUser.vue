@@ -90,6 +90,18 @@
             </div>
         </div>
 
+        <!-- Alert for successful creation -->
+        <div v-if="showCreateSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            User created successfully!
+            <button type="button" class="btn-close" @click="dismissCreateAlert" aria-label="Close"></button>
+        </div>
+
+        <!-- Alert for successful editing -->
+        <div v-if="showEditSuccess" class="alert alert-success alert-dismissible fade show" role="alert">
+            User edited successfully!
+            <button type="button" class="btn-close" @click="dismissEditAlert" aria-label="Close"></button>
+        </div>
+
     </div>
 </div>
 </template>
@@ -101,9 +113,13 @@ export default {
     name: 'ManageUser',
     data() {
         return {
-            posts: [],
+            users: [],
             showUserModal: false,
             editingUser: false,
+            showCreateSuccess: false,
+            showEditSuccess: false,
+            showDeleteConfirm: false,
+            deletingUserId: null,
             userForm: {
                 name: '',
                 email: '',
@@ -114,10 +130,10 @@ export default {
         };
     },
     async created() {
-        this.fetchPosts();
+        this.fetchUsers();
     },
     methods: {
-        async fetchPosts() {
+        async fetchUsers() {
             try {
                 const response = await axios.get(this.$root.$data.apiUrl + '/user');
                 this.users = response.data;
@@ -138,9 +154,9 @@ export default {
             this.editingUser = true;
             this.userForm = {
                 id: post.id,
-                name:  post.name,
-                email:  post.email,
-                password:  post.password,
+                name: post.name,
+                email: post.email,
+                password: post.password,
             };
             this.showUserModal = true;
         },
@@ -148,26 +164,34 @@ export default {
             try {
                 if (this.editingUser) {
                     await axios.put(this.$root.$data.apiUrl + '/update/User/' + this.userForm.id, this.userForm);
+                    this.showEditSuccess = true;
                 } else {
                     await axios.post(this.$root.$data.apiUrl + '/newUser', this.userForm);
+                    this.showCreateSuccess = true;
                 }
                 this.closeUserModal();
-                this.fetchPosts(); 
+                this.fetchUsers();
             } catch (error) {
                 console.error('Error saving post:', error);
             }
         },
-        async deleteUser(postId) {
+        async deleteUser(userId) {
             try {
-                await axios.delete(this.$root.$data.apiUrl + '/deleteUser/' + postId);
-                this.fetchPosts(); 
+                await axios.delete(this.$root.$data.apiUrl + '/deleteUser/' + userId);
+                this.fetchUsers();
             } catch (error) {
-                console.error('Error deleting post:', error);
+                console.error('Error deleting user:', error);
             }
         },
         closeUserModal() {
             this.showUserModal = false;
         },
+        dismissCreateAlert() {
+            this.showCreateSuccess = false;
+        },
+        dismissEditAlert() {
+            this.showEditSuccess = false;
+        }
     },
 }
 </script>
